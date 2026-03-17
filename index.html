@@ -6,6 +6,7 @@
     <title>Presupuesto Interactivo - Ngegestion</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* [Mismo CSS de antes - no cambió] */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -176,6 +177,7 @@
 
     <script>
         let selectedPrice = 0;
+        const WHATSAPP = '3244913371';
         
         function selectOption(element, price) {
             document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
@@ -226,7 +228,7 @@
                     
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #dee2e6; color: #666; font-size: 0.9em;">
                         <p>✅ Válido por 30 días</p>
-                        <p>📱 Contacto: Eli Suárez | WhatsApp: 301 XXX XXXX</p>
+                        <p>📱 Eli Suárez | WhatsApp: <a href="https://wa.me/573244913371" style="color: #25D366; text-decoration: none;">324 491 3371</a></p>
                         <p style="margin-top: 15px; font-weight: bold;">¡Nueva Generación al servicio de tu negocio!</p>
                     </div>
                 </div>
@@ -264,7 +266,7 @@
                     
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #dee2e6; color: #666; font-size: 0.9em;">
                         <p>✅ Pago recibido en su totalidad</p>
-                        <p>📱 Contacto: Eli Suárez | WhatsApp: 301 XXX XXXX</p>
+                        <p>📱 Eli Suárez | WhatsApp: <a href="https://wa.me/573244913371" style="color: #25D366; text-decoration: none;">324 491 3371</a></p>
                         <p style="margin-top: 15px; font-weight: bold;">¡Gracias por confiar en Nueva Generación!</p>
                     </div>
                 </div>
