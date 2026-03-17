@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto Interactivo - Ngegestion</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+        }
+        .container { 
+            background: rgba(255,255,255,0.95); 
+            backdrop-filter: blur(10px); 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+            max-width: 500px; 
+            width: 100%; 
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .header { 
+            background: linear-gradient(135deg, #ff6b6b, #feca57); 
+            padding: 30px; 
+            text-align: center; 
+            color: white; 
+            position: relative; 
+            overflow: hidden;
+        }
+        .header::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.7s; }
+        .header:hover::before { left: 100%; }
+        .logo { font-size: 2.5em; margin-bottom: 10px; }
+        .title { font-size: 1.4em; font-weight: 700; }
+        
+        .content { padding: 40px 30px; }
+        .switcher { display: flex; background: #f8f9fa; border-radius: 50px; padding: 5px; margin-bottom: 30px; }
+        .switch-btn { flex: 1; padding: 12px; border: none; background: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .switch-btn.active { background: #667eea; color: white; }
+        
+        .presupuesto-section, .recibo-section { display: none; animation: fadeIn 0.5s; }
+        .presupuesto-section.active, .recibo-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .option { 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            color: white; 
+            padding: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            position: relative; 
+            overflow: hidden;
+        }
+        .option:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .option::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.6s; }
+        .option:hover::before { left: 100%; }
+        .option.selected { border: 3px solid #feca57; background: linear-gradient(135deg, #764ba2, #667eea); }
+        .option i { font-size: 3em; margin-bottom: 15px; display: block; }
+        .option-price { font-size: 2.2em; font-weight: 800; margin: 10px 0; }
+        .option-desc { font-size: 1.1em; opacity: 0.9; }
+        
+        .total { 
+            background: linear-gradient(135deg, #28a745, #20c997); 
+            color: white; 
+            padding: 25px; 
+            border-radius: 15px; 
+            text-align: center; 
+            font-size: 1.8em; 
+            font-weight: 700; 
+            margin: 20px 0; 
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
+        .btn-generar { 
+            width: 100%; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #ff6b6b, #feca57); 
+            color: white; 
+            border: none; 
+            border-radius: 15px; 
+            font-size: 1.4em; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            margin-top: 20px;
+        }
+        .btn-generar:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        .recibo-preview { 
+            background: #f8f9fa; 
+            border: 2px dashed #dee2e6; 
+            border-radius: 10px; 
+            padding: 20px; 
+            margin-top: 20px; 
+            font-family: monospace; 
+            white-space: pre-wrap;
+        }
+        
+        .print-area { display: none; }
+        @media print { .container { box-shadow: none; } .print-area { display: block !important; } }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <div class="logo">🏗️</div>
+            <div class="title">Ngegestion · Presupuestos Digitales</div>
+            <h3>Doña Edilsa - Estructuras PVC</h3>
+        </div>
+        
+        <div class="content">
+            <div class="switcher">
+                <button class="switch-btn active" onclick="switchMode('presupuesto')">📋 Presupuesto</button>
+                <button class="switch-btn" onclick="switchMode('recibo')">💰 Recibo</button>
+            </div>
+            
+            <!-- PRESUPUESTO -->
+            <div id="presupuesto-section" class="presupuesto-section active">
+                <div class="option" onclick="selectOption(this, 348000)">
+                    <i class="fas fa-building"></i>
+                    <div class="option-price">$348.000</div>
+                    <div class="option-desc">AVISO COMPLETO<br>con plancha PVC</div>
+                </div>
+                
+                <div class="option" onclick="selectOption(this, 168000)">
+                    <i class="fas fa-flag"></i>
+                    <div class="option-price">$168.000</div>
+                    <div class="option-desc">SÓLO PENDÓN<br>sin estructura</div>
+                </div>
+                
+                <div class="total" id="total-preview">
+                    Selecciona una opción
+                </div>
+                
+                <button class="btn-generar" onclick="generatePresupuesto()">
+                    <i class="fas fa-file-invoice-dollar"></i> Generar Presupuesto
+                </button>
+            </div>
+            
+            <!-- RECIBO -->
+            <div id="recibo-section" class="recibo-section">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <input type="number" id="recibo-monto" placeholder="Monto recibido" style="width: 200px; padding: 12px; border-radius: 10px; border: 2px solid #ddd; font-size: 1.2em; text-align: center;">
+                </div>
+                
+                <button class="btn-generar" onclick="generateRecibo()">
+                    <i class="fas fa-print"></i> Generar Recibo
+                </button>
+            </div>
+        </div>
+        
+        <!-- ÁREA DE IMPRESIÓN -->
+        <div class="print-area" id="print-area"></div>
+    </div>
+
+    <script>
+        let selectedPrice = 0;
+        
+        function selectOption(element, price) {
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPrice = price;
+            document.getElementById('total-preview').innerHTML = `<i class="fas fa-check-circle"></i> TOTAL: $${price.toLocaleString()}`;
+        }
+        
+        function switchMode(mode) {
+            document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.presupuesto-section, .recibo-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(mode + '-section').classList.add('active');
+        }
+        
+        function generatePresupuesto() {
+            if(selectedPrice === 0) {
+                alert('¡Selecciona una opción primero!');
+                return;
+            }
+            
+            const printContent = `
+                <div style="max-width: 500px; margin: 0 auto; padding: 30px; font-family: Arial, sans-serif; background: white; border-radius: 10px;">
+                    <div style="background: linear-gradient(135deg, #ff6b6b, #feca57); color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 30px;">
+                        <h1 style="margin: 0; font-size: 2em;">🏗️ Ngegestion</h1>
+                        <p style="margin: 5px 0 0 0; font-size: 1.2em;">Presupuestos Digitales</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h2 style="color: #333; margin-bottom: 10px;">PRESUPUESTO 4850 #001</h2>
+                        <p style="font-size: 1.2em; color: #666;">Doña Edilsa</p>
+                        <p style="color: #666;">Cúcuta, ${new Date().toLocaleDateString('es-CO')}</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin: 20px 0;">
+                        <h3 style="color: #2c5f2d; margin-bottom: 15px;">📋 DETALLE:</h3>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #28a745; text-align: center;">
+                            ${document.querySelector('.option.selected .option-desc').innerHTML}<br>
+                            <span style="font-size: 1.5em;">$${selectedPrice.toLocaleString()}</span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: #e9ecef; border-radius: 10px; margin-top: 30px;">
+                        <div style="font-weight: bold; font-size: 1.1em;">TOTAL</div>
+                        <div style="font-size: 1.5em; color: #28a745; font-weight: 800;">$${selectedPrice.toLocaleString()}</div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #dee2e6; color: #666; font-size: 0.9em;">
+                        <p>✅ Válido por 30 días</p>
+                        <p>📱 Contacto: Eli Suárez | WhatsApp: 3244913371</p>
+                        <p style="margin-top: 15px; font-weight: bold;">¡Tecnología al servicio de tu negocio!</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('print-area').innerHTML = printContent;
+            window.print();
+        }
+        
+        function generateRecibo() {
+            const monto = document.getElementById('recibo-monto').value;
+            if(!monto || monto <= 0) {
+                alert('Ingresa el monto recibido');
+                return;
+            }
+            
+            const printContent = `
+                <div style="max-width: 500px; margin: 0 auto; padding: 30px; font-family: Arial, sans-serif; background: white; border-radius: 10px;">
+                    <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 30px;">
+                        <h1 style="margin: 0; font-size: 2em;">💰 Ngegestion</h1>
+                        <p style="margin: 5px 0 0 0; font-size: 1.2em;">Recibo de Pago</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h2 style="color: #333; margin-bottom: 10px;">RECIBO #001</h2>
+                        <p style="font-size: 1.2em; color: #666;">Doña Edilsa</p>
+                        <p style="color: #666;">Cúcuta, ${new Date().toLocaleDateString('es-CO')}</p>
+                    </div>
+                    
+                    <div style="background: #d4edda; padding: 30px; border-radius: 15px; text-align: center; margin: 20px 0;">
+                        <h3 style="color: #155724; margin-bottom: 20px;">✅ RECIBIDO:</h3>
+                        <div style="font-size: 2.5em; font-weight: 800; color: #28a745;">$${parseInt(monto).toLocaleString()}</div>
+                        <p style="margin-top: 15px; font-size: 1.1em; color: #155724;">Por concepto de publicidad</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #dee2e6; color: #666; font-size: 0.9em;">
+                        <p>✅ Pago recibido en su totalidad</p>
+                        <p>📱 Contacto: Eli Suárez | WhatsApp: 3244913371</p>
+                        <p style="margin-top: 15px; font-weight: bold;">¡Gracias por confiar en Ngegestion!</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('print-area').innerHTML = printContent;
+            window.print();
+        }
+    </script>
+</body>
+</html>
