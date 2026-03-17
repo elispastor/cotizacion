@@ -6,7 +6,6 @@
     <title>Presupuesto Interactivo - Ngegestion</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* [Mismo CSS de antes - no cambió] */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -39,16 +38,31 @@
         }
         .header::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.7s; }
         .header:hover::before { left: 100%; }
-        .logo { 
-            font-size: 3em; 
-            font-weight: 800; 
-            background: linear-gradient(45deg, #fff, #ffd700); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            background-clip: text;
+        
+        /* LOGO (imagen) */
+        .logo-img {
+            max-width: 120px;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            transition: transform 0.3s;
         }
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .presupuesto-numero {
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 30px;
+            margin-top: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        
         .title { font-size: 1.4em; font-weight: 700; }
         
         .content { padding: 40px 30px; }
@@ -90,8 +104,13 @@
             font-weight: 700; 
             margin: 20px 0; 
             animation: pulse 2s infinite;
+            transition: all 0.3s;
         }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .total:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(40,167,69,0.4);
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
         
         .btn-generar { 
             width: 100%; 
@@ -105,7 +124,11 @@
             cursor: pointer; 
             transition: all 0.3s; 
             margin-top: 20px;
+            position: relative;
+            overflow: hidden;
         }
+        .btn-generar::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.6s; }
+        .btn-generar:hover::before { left: 100%; }
         .btn-generar:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         
         .recibo-preview { 
@@ -125,9 +148,13 @@
 <body>
     <div class="container" id="container">
         <div class="header">
-            <div class="logo">NGE</div>
+            <!-- LOGO (imagen) -->
+            <img src="logo.png" alt="NGE Logo" class="logo-img">
             <div class="title">Nueva Generación · Presupuestos Digitales</div>
-            <h3>Doña Edilsa - Estructuras PVC</h3>
+            <div class="presupuesto-numero">
+                <i class="far fa-file"></i> PRESUPUESTO N° 1320
+            </div>
+            <h3 style="margin-top: 10px;">Doña Edilsa - Estructuras PVC</h3>
         </div>
         
         <div class="content">
@@ -177,6 +204,7 @@
 
     <script>
         let selectedPrice = 0;
+        let presupuestoCount = 1320; // Número de presupuesto inicial
         const WHATSAPP = '3244913371';
         
         function selectOption(element, price) {
@@ -200,6 +228,9 @@
                 return;
             }
             
+            // Incrementar número de presupuesto
+            presupuestoCount++;
+            
             const printContent = `
                 <div style="max-width: 500px; margin: 0 auto; padding: 30px; font-family: Arial, sans-serif; background: white; border-radius: 10px;">
                     <div style="background: linear-gradient(135deg, #ff6b6b, #feca57); color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 30px;">
@@ -208,7 +239,7 @@
                     </div>
                     
                     <div style="text-align: center; margin-bottom: 30px;">
-                        <h2 style="color: #333; margin-bottom: 10px;">PRESUPUESTO #001</h2>
+                        <h2 style="color: #333; margin-bottom: 10px;">PRESUPUESTO #${presupuestoCount}</h2>
                         <p style="font-size: 1.2em; color: #666;">Doña Edilsa</p>
                         <p style="color: #666;">Cúcuta, ${new Date().toLocaleDateString('es-CO')}</p>
                     </div>
