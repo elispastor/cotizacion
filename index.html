@@ -38,7 +38,16 @@
         }
         .header::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.7s; }
         .header:hover::before { left: 100%; }
-        .logo { font-size: 2.5em; margin-bottom: 10px; }
+        .logo { 
+            font-size: 3em; 
+            font-weight: 800; 
+            background: linear-gradient(45deg, #fff, #ffd700); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
         .title { font-size: 1.4em; font-weight: 700; }
         
         .content { padding: 40px 30px; }
@@ -115,8 +124,8 @@
 <body>
     <div class="container" id="container">
         <div class="header">
-            <div class="logo">🏗️</div>
-            <div class="title">Ngegestion · Presupuestos Digitales</div>
+            <div class="logo">NGE</div>
+            <div class="title">Nueva Generación · Presupuestos Digitales</div>
             <h3>Doña Edilsa - Estructuras PVC</h3>
         </div>
         
@@ -131,7 +140,7 @@
                 <div class="option" onclick="selectOption(this, 348000)">
                     <i class="fas fa-building"></i>
                     <div class="option-price">$348.000</div>
-                    <div class="option-desc">AVISO COMPLETO<br>con plancha PVC</div>
+                    <div class="option-desc">AVISO COMPLETO<br>con ESTRUCTURA PVC</div>
                 </div>
                 
                 <div class="option" onclick="selectOption(this, 168000)">
@@ -192,12 +201,12 @@
             const printContent = `
                 <div style="max-width: 500px; margin: 0 auto; padding: 30px; font-family: Arial, sans-serif; background: white; border-radius: 10px;">
                     <div style="background: linear-gradient(135deg, #ff6b6b, #feca57); color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 30px;">
-                        <h1 style="margin: 0; font-size: 2em;">🏗️ Ngegestion</h1>
-                        <p style="margin: 5px 0 0 0; font-size: 1.2em;">Presupuestos Digitales</p>
+                        <h1 style="margin: 0; font-size: 2.5em; font-weight: 800;">NGE</h1>
+                        <p style="margin: 5px 0 0 0; font-size: 1.2em;">Nueva Generación · Presupuestos Digitales</p>
                     </div>
                     
                     <div style="text-align: center; margin-bottom: 30px;">
-                        <h2 style="color: #333; margin-bottom: 10px;">PRESUPUESTO 4850 #001</h2>
+                        <h2 style="color: #333; margin-bottom: 10px;">PRESUPUESTO #001</h2>
                         <p style="font-size: 1.2em; color: #666;">Doña Edilsa</p>
                         <p style="color: #666;">Cúcuta, ${new Date().toLocaleDateString('es-CO')}</p>
                     </div>
@@ -217,8 +226,8 @@
                     
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #dee2e6; color: #666; font-size: 0.9em;">
                         <p>✅ Válido por 30 días</p>
-                        <p>📱 Contacto: Eli Suárez | WhatsApp: 3244913371</p>
-                        <p style="margin-top: 15px; font-weight: bold;">¡Tecnología al servicio de tu negocio!</p>
+                        <p>📱 Contacto: Eli Suárez | WhatsApp: 301 XXX XXXX</p>
+                        <p style="margin-top: 15px; font-weight: bold;">¡Nueva Generación al servicio de tu negocio!</p>
                     </div>
                 </div>
             `;
@@ -237,8 +246,8 @@
             const printContent = `
                 <div style="max-width: 500px; margin: 0 auto; padding: 30px; font-family: Arial, sans-serif; background: white; border-radius: 10px;">
                     <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 30px;">
-                        <h1 style="margin: 0; font-size: 2em;">💰 Ngegestion</h1>
-                        <p style="margin: 5px 0 0 0; font-size: 1.2em;">Recibo de Pago</p>
+                        <h1 style="margin: 0; font-size: 2.5em; font-weight: 800;">NGE</h1>
+                        <p style="margin: 5px 0 0 0; font-size: 1.2em;">Nueva Generación · Recibo de Pago</p>
                     </div>
                     
                     <div style="text-align: center; margin-bottom: 30px;">
@@ -255,8 +264,8 @@
                     
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #dee2e6; color: #666; font-size: 0.9em;">
                         <p>✅ Pago recibido en su totalidad</p>
-                        <p>📱 Contacto: Eli Suárez | WhatsApp: 3244913371</p>
-                        <p style="margin-top: 15px; font-weight: bold;">¡Gracias por confiar en Ngegestion!</p>
+                        <p>📱 Contacto: Eli Suárez | WhatsApp: 301 XXX XXXX</p>
+                        <p style="margin-top: 15px; font-weight: bold;">¡Gracias por confiar en Nueva Generación!</p>
                     </div>
                 </div>
             `;
